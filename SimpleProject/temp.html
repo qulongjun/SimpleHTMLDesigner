@@ -7,7 +7,8 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="css/animate.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
 	</head>
 
 	<body>
@@ -20,7 +21,7 @@
 				</div>
 			</div>
 			<div class="row-fluid">
-				<div class="col-md-3">
+				<div id="leftNav" class="col-md-3">
 					<div class="tabbable" id="tabs-931592">
 						<ul class="nav nav-tabs">
 							<li class="active">
@@ -32,7 +33,7 @@
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" id="panel-505116">
-								<div class="item">
+								<div class="item" data-label="h1">
 									<h1>插入H1标题</h1>
 								</div>
 								<div class="item">
@@ -64,39 +65,75 @@
 						<div class="panel-heading">
 							<h3 class="panel-title">画布</h3>
 						</div>
-						<div class="panel-body">
-							<div class="panel-item">
-								
-							</div>
-							<div class="panel-item">
-								
-							</div>
-							<div class="panel-item">
-								
-							</div>
+						<div class="panel-body" >
+							<ul id="main-Panel"></ul>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-3">
-					<ul class="nav nav-tabs">
-						<li class="active">
-							<a href="#">元素属性</a>
-						</li>
-						<li>
-							<a href="#">页面属性</a>
-						</li>
-						<li class="disabled">
-							<a href="#">其他</a>
-						</li>
-						<br />
-					</ul>
+					<div class="tabbable" id="tabs-931592">
+						<ul class="nav nav-tabs">
+							<li class="active">
+								<a data-toggle="tab" href="#panel-505116">元素属性</a>
+							</li>
+							<li>
+								<a data-toggle="tab" href="#panel-420144">画布属性</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="panel-505116">
+								<div class="rightNav-item">
+									<form class="form-horizontal" id="propertyForm">
+										<div class="form-group">
+											<label for="inputEmail3" class="col-sm-3 control-label">元素名称</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" id="eleName" placeholder="请输入元素名称">
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="inputPassword3" class="col-sm-3 control-label">文本内容</label>
+											<div class="col-sm-9">
+												<textarea class="form-control" id="valueEle" rows="3" placeholder="请输入文本内容"></textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="inputPassword3" class="col-sm-3 control-label">文本操作</label>
+											<div class="btn-group col-sm-9" role="group">
+												<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-size"></span></button>
+												<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-color"></span></button>
+												<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-bold"></span></button>
+												<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-italic"></span></button>
+												<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-left"></span></button>
+												<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-center"></span></button>
+												<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-right"></span></button>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-sm-offset-2 col-sm-2">
+												<button type="button" class="btn btn-default">保存</button>
+											</div>
+											<div class="col-sm-2">
+												<button type="button" class="btn btn-default">取消</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="tab-pane " id="panel-420144">
+								<p>
+									第二部分内容.
+								</p>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</body>
-	<script src="js/require.js" data-main="js/main"></script>
-	<script type="text/javascript">
-		require(['bootstrap.min'], function() {});
-	</script>
+	<!--<script src="js/require.js" data-main="js/main"></script>-->
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/underscore.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/backbone.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
 
 </html>

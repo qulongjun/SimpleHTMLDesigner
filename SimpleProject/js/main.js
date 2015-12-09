@@ -1,18 +1,18 @@
 /*
  * main.js
  */
-
-(function() {
-	require.config({
-		paths: {
-			jquery: 'js/jquery',
-			bootstrap: 'js/bootstrap.min'
+require.config({
+	paths: {
+		jquery: 'js/jquery',
+		backbone: 'js/backbone'
+	},
+	shim: {
+		underscore: {
+			exports: '_'
 		},
-		shim: {
-			bootstrap: {
-				deps: ['jquery'],
-				exports: 'bootstrap'
-			}
+		backbone: {
+			deps: ["underscore", "jquery"],
+			exports: "Backbone"
 		}
-	});
-})(this);
+	}
+});
