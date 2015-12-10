@@ -10,11 +10,7 @@
 	//中间选中元素模型
 	var ChooseTextItem = Backbone.Model.extend({
 		initialize: function() {
-			this.bind("change:name", this.changeName);
 			this.bind("change:value", this.changeValue);
-		},
-		changeName: function() {
-
 		},
 		changeValue: function(model) {
 			var chooseItem = new ChooseView({
@@ -63,14 +59,6 @@
 			chooseItemCid: 'unKnown'
 		}
 	});
-
-
-	//备选元素集合
-	var OptionalList = Backbone.Collection.extend({
-		model: Optional
-	});
-
-
 	//选中元素集合
 	var ChooseTextItemList = Backbone.Collection.extend({
 		model: ChooseTextItem,
@@ -96,8 +84,6 @@
 			});
 		}
 	});
-
-
 	//元素属性集合
 	var PropertyList = Backbone.Collection.extend({
 		model: EleProperty
@@ -139,19 +125,18 @@
 			$("#main-Panel").append(newDiv);
 			return this;
 		},
-		
+
 		changeValue: function(model) {
-			//alert(model.cid);
+			alert(model.cid);
 			//$('#' + model.cid).children().html(model.get("value"));
-			
 		},
 		clickBox: function(event) {
-			var ele= event.target.tagName == "DIV" ? event.target : event.target.parentElement;
+			var ele = event.target.tagName == "DIV" ? event.target : event.target.parentElement;
 			var cid = ele.id;
 			var model = chooseList.getByCid(cid);
 			console.log(event);
 			$('.box').removeClass('chooseItemChecked');
-			ele.className="box animated bounceInLeft chooseItemChecked";
+			ele.className = "box animated bounceInLeft chooseItemChecked";
 		}
 	});
 
