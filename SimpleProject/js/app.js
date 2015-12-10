@@ -6,8 +6,22 @@
 			text: 'unKnown',
 		}
 	});
+
 	//中间选中元素模型
 	var ChooseTextItem = Backbone.Model.extend({
+		initialize: function() {
+			this.bind("change:name", this.changeName);
+			this.bind("change:value", this.changeValue);
+		},
+		changeName: function() {
+
+		},
+		changeValue: function(model) {
+			var chooseItem = new ChooseView({
+				collection: chooseList,
+				model: model
+			});
+		},
 		defaults: {
 			tag: 'div',
 			name: '新元素',
@@ -20,14 +34,23 @@
 			propertyCid: 'unKnown'
 		}
 	});
+
 	//右侧元素属性模型
 	var EleProperty = Backbone.Model.extend({
 		//构造函数
 		initialize: function() {
-			this.bind("change", function() {
-				var name = this.get("name");
-				alert("你改变了属性值name:" + name);
-			});
+			this.bind("change:name", this.changeName);
+			this.bind("change:value", this.changeValue);
+		},
+		changeName: function(model) {
+			var cid = this.get("chooseItemCid");
+			var chooseModel = chooseList.getByCid(cid)
+			chooseModel.set("name", model.get("name"));
+		},
+		changeValue: function(model) {
+			var cid = this.get("chooseItemCid");
+			var chooseModel = chooseList.getByCid(cid)
+			chooseModel.set("value", model.get("value"));
 		},
 		defaults: {
 			name: 'unKnown',
@@ -40,49 +63,21 @@
 			chooseItemCid: 'unKnown'
 		}
 	});
+
+
 	//备选元素集合
 	var OptionalList = Backbone.Collection.extend({
 		model: Optional
 	});
+
+
 	//选中元素集合
 	var ChooseTextItemList = Backbone.Collection.extend({
-		model: ChooseTextItem
-	});
-	//元素属性集合
-	var PropertyList = Backbone.Collection.extend({
-		model: EleProperty
-	});
-	//备选元素视图
-	var OptionalView = Backbone.View.extend({
-		el: $('#leftNav'),
-		events: {
-			'click .item': 'optionClick'
-		},
-		'optionClick': function(model) {
-			var tg = model.target;
-			var opt = new Optional({
-				'tag': tg.children[0].tagName,
-				'text': '请输入文本内容'
-			});
-			var choose = new ChooseTextItem({
-				'tag': tg.children[0].tagName
-			})
-			chooseList.add(choose);
-		}
-	});
-	//选中元素视图
-	var ChooseView = Backbone.View.extend({
-		el: $("#main-Panel"),
+		model: ChooseTextItem,
 		initialize: function() {
-			this.collection.bind("add", this.addOne);
-			this.collection.bind("remove", this.delOne);
-		},
-		events: {
-
+			this.bind('add', this.addOne);
 		},
 		addOne: function(model) {
-			var newDiv = $('<li><div id="" class="box animated bounceInLeft"><' + model.get('tag') + '>' + model.get('value') + '</' + model.get('tag') + '></div></li>')
-			$("#main-Panel").append(newDiv);
 			var eleProperty = new EleProperty({
 				name: model.get('name'),
 				value: model.get('value'),
@@ -95,48 +90,107 @@
 			});
 			propertyList.add(eleProperty);
 			model.set("propertyCid", eleProperty.cid);
+			var propertyView = new PropertyView({
+				collection: propertyList,
+				model: eleProperty
+			});
 		}
 	});
+
+
+	//元素属性集合
+	var PropertyList = Backbone.Collection.extend({
+		model: EleProperty
+	});
+
+
+	//备选元素视图
+	var OptionalView = Backbone.View.extend({
+		el: $('#leftNav'),
+		events: {
+			'click .item': 'optionClick'
+		},
+		'optionClick': function(model) {
+			var ctag = model.target.children[0] != undefined ? model.target.children[0].tagName : model.target.tagName;
+			var opt = new Optional({
+				'tag': ctag,
+				'text': '请输入文本内容'
+			});
+			var choose = new ChooseTextItem({
+				'tag': ctag
+			})
+			chooseList.add(choose);
+		}
+	});
+
+
+	//选中元素视图
+	var ChooseView = Backbone.View.extend({
+		el: $("#main-Panel"),
+		initialize: function() {
+			this.collection.bind("add", this.render);
+			this.model.bind("change", this.changeValue);
+		},
+		events: {
+			"click .box": 'clickBox'
+		},
+		render: function(model) {
+			var newDiv = $('<li><div id="' + model.cid + '" class="box animated bounceInLeft"><' + model.get('tag') + '>' + model.get('value') + '</' + model.get('tag') + '></div></li>')
+			$("#main-Panel").append(newDiv);
+			return this;
+		},
+		
+		changeValue: function(model) {
+			//alert(model.cid);
+			//$('#' + model.cid).children().html(model.get("value"));
+			
+		},
+		clickBox: function(event) {
+			var ele= event.target.tagName == "DIV" ? event.target : event.target.parentElement;
+			var cid = ele.id;
+			var model = chooseList.getByCid(cid);
+			console.log(event);
+			$('.box').removeClass('chooseItemChecked');
+			ele.className="box animated bounceInLeft chooseItemChecked";
+		}
+	});
+
+
+
+	//元素属性视图
 	var PropertyView = Backbone.View.extend({
 		el: $('#propertyForm'),
 		initialize: function() {
-			console.log(this.model);
-			//this.collection.bind("add", this.addOne);
+			this.render();
 		},
 		events: {
 			"change #eleName": "eleName",
 			"change #valueEle": "valueEle"
 		},
-
-		//		addOne: function(model) {
-		//			$('#eleName').prop('value', model.get('name'));
-		//			$('#valueEle').prop('value', model.get('value'));
-		//		},
+		render: function() {
+			$('#eleName').prop('value', this.model.get("name"));
+			$('#valueEle').prop('value', this.model.get("value"));
+		},
 		eleName: function(event) {
 			//元素名被修改触发事件
 			var name = $('#eleName').prop('value');
-			var value = $('#valueEle').prop('value');
-			//this.collection.get(∂)
-//			//
-//			console.log(this.model);
-			//this.model.set
-		
+			this.model.set("name", name);
 		},
-		'valueEle': function(event) {
+		valueEle: function(event) {
 			//文本值被修改触发事件
+			var value = $('#valueEle').prop('value');
+			this.model.set("value", value);
 		}
 	});
+
+
+
 
 	var chooseList = new ChooseTextItemList();
 	var propertyList = new PropertyList();
 	var optionView = new OptionalView();
-	var propertyView = new PropertyView({
-		collection: propertyList,
-		//model: EleProperty
-
-	});
-
 	var chooseView = new ChooseView({
-		collection: chooseList
+		collection: chooseList,
+		model: new ChooseTextItem()
 	});
 })();

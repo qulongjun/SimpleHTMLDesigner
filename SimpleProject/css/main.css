@@ -110,3 +110,6 @@
 .rightNav-item {
 	margin-top: 20px;
 }
+.chooseItemChecked{
+	border: 2px solid red;
+}
