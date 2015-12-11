@@ -72,16 +72,22 @@
 			var model = chooseList.getByCid(cid);
 			$('.box').removeClass('chooseItemChecked');
 			ele.className = "box animated bounceInLeft chooseItemChecked";
-			console.log(this.collection.getByCid(cid));
-			
+			//console.log(this.collection.getByCid(cid));
+			var temp=this.collection.getByCid(cid)
+			//this.model=this.collection.getByCid(cid);
+			//console.log(this.model);
+			//console.log(temp);
+			//$('#eleName').prop("value",temp.get("name"));
+			$('#valueEle').prop("value",temp.get("value"));
+			$('#eleName').prop("value",temp.get("name"));
+			chooseView.model=temp;
 		},
 		eleNameChange: function(event) {
-			this.model.set("name", $('#valueEle').prop('name'));
+			this.model.set("name", $('#eleName').prop('value'));
 		},
 		valueEleChange: function(event) {
 			var value = $('#valueEle').prop('value')
 			this.model.set("value", value);
-			console.log(this.model.cid);
 			$('#' + this.model.cid).children().html(value);
 		}
 	});
