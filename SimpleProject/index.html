@@ -10,7 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="css/animate.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<!--<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">-->
-		<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
 	</head>
 
 	<body>
@@ -34,7 +34,7 @@
 							</li>
 						</ul>
 						<div class="tab-content">
-							<div class="tab-pane active" id="panel-505116">
+							<div class="tab-pane active leftNavliDiv" id="panel-505116">
 								<div class="item" data-label="h1">
 									<h1>插入H1标题</h1>
 								</div>
@@ -54,9 +54,9 @@
 									<h6>插入H6标题</h6>
 								</div>
 							</div>
-							<div class="tab-pane " id="panel-420144">
+							<div class="tab-pane leftNavliDiv" id="panel-420144">
 								<p>
-									第二部分内容.
+									第二部分插入图片内容.
 								</p>
 							</div>
 						</div>
@@ -76,7 +76,7 @@
 					</div>
 					<div class="col-md-3">
 						<div class="tabbable" id="tabs-931592">
-							<ul class="nav nav-tabs">
+							<ul class="nav nav-tabs" id="rightNavUl">
 								<li class="active">
 									<a data-toggle="tab" href="#panel-505116">元素属性</a>
 								</li>
@@ -85,7 +85,7 @@
 								</li>
 							</ul>
 							<div class="tab-content">
-								<div class="tab-pane active" id="panel-505116">
+								<div class="tab-pane active rightNavliDiv" id="panel-505116">
 									<div class="rightNav-item">
 										<form class="form-horizontal" id="propertyForm">
 											<div class="form-group">
@@ -122,9 +122,9 @@
 										</form>
 									</div>
 								</div>
-								<div class="tab-pane " id="panel-420144">
+								<div class="tab-pane rightNavliDiv" id="panel-420144">
 									<p>
-										第二部分内容.
+										第二部分画布内容.
 									</p>
 								</div>
 							</div>
@@ -151,7 +151,19 @@
 					indexActive = $(this).index();
 				})
 				if (indexActive != index) {
-					$(this).addClass('active');
+					$(this).addClass('active').siblings('li').removeClass('active');
+					$('.leftNavliDiv').eq(index).addClass('active').siblings().removeClass('active');
+				}
+			});
+			$('#rightNavUl li').click(function() {
+				var index = $(this).index();
+				var indexActive;
+				$('#rightNavUl li.active').each(function() {
+					indexActive = $(this).index();
+				})
+				if (indexActive != index) {
+					$(this).addClass('active').siblings('li').removeClass('active');
+					$('.rightNavliDiv').eq(index).addClass('active').siblings().removeClass('active');
 				}
 			});
 			$("#main-Panel").sortable({
