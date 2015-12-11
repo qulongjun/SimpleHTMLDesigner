@@ -6,6 +6,7 @@
 			text: 'unKnown',
 		}
 	});
+
 	//中间选中元素模型
 	var ChooseTextItem = Backbone.Model.extend({
 		defaults: {
@@ -17,19 +18,14 @@
 			bold: 'normal',
 			italic: 'normal',
 			textAlign: 'left',
-
 		}
 	});
+
 	//选中元素集合
 	var ChooseTextItemList = Backbone.Collection.extend({
-		model: ChooseTextItem,
-		initialize: function() {
-			this.bind('add', this.addOne);
-		},
-		addOne: function(model) {
-
-		}
+		model: ChooseTextItem
 	});
+
 	//备选元素视图
 	var OptionalView = Backbone.View.extend({
 		el: $('#leftNav'),
@@ -46,14 +42,17 @@
 				'tag': ctag
 			})
 			chooseList.add(choose);
+			chooseView.model = choose;
 		}
 	});
+
+
+
 	//选中元素视图
 	var ChooseView = Backbone.View.extend({
-		el: $("body"),
+		el: $("#main-Context"),
 		initialize: function() {
 			this.collection.bind("add", this.render);
-			this.model.bind("change", this.changeValue);
 		},
 		events: {
 			"click .box": 'clickBox',
@@ -67,30 +66,29 @@
 			$('#valueEle').prop('value', model.get("value"));
 			return this;
 		},
-		changeValue: function(model) {
-			//alert(model.cid);
-			//$('#' + model.cid).children().html(model.get("value"));
-		},
 		clickBox: function(event) {
 			var ele = event.target.tagName == "DIV" ? event.target : event.target.parentElement;
 			var cid = ele.id;
 			var model = chooseList.getByCid(cid);
 			$('.box').removeClass('chooseItemChecked');
 			ele.className = "box animated bounceInLeft chooseItemChecked";
+			console.log(this.collection.getByCid(cid));
+			
 		},
 		eleNameChange: function(event) {
-			alert(this.model.cid);
+			this.model.set("name", $('#valueEle').prop('name'));
 		},
 		valueEleChange: function(event) {
-			alert(this.model.cid);
+			var value = $('#valueEle').prop('value')
+			this.model.set("value", value);
+			console.log(this.model.cid);
+			$('#' + this.model.cid).children().html(value);
 		}
 	});
-
-
 	var chooseList = new ChooseTextItemList();
 	var optionView = new OptionalView();
 	var chooseView = new ChooseView({
-		collection: chooseList,
-		model: new ChooseTextItem()
+		collection: chooseList
+			//model: new ChooseTextItem()
 	});
 })();
