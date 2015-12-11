@@ -99,10 +99,9 @@
 													<textarea class="form-control" id="valueEle" rows="3" placeholder="请输入文本内容"></textarea>
 												</div>
 											</div>
-											<div class="form-group">
+											<!--<div class="form-group">
 												<label for="inputPassword3" class="col-sm-3 control-label">文本操作</label>
 												<div class="btn-group col-sm-9" role="group">
-													<!--	<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-size"></span></button>-->
 													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-color"></span></button>
 													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-bold"></span></button>
 													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-italic"></span></button>
@@ -110,7 +109,7 @@
 													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-center"></span></button>
 													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-right"></span></button>
 												</div>
-											</div>
+											</div>-->
 											<!--<div class="form-group">
 												<div class="col-sm-offset-2 col-sm-2">
 													<button type="button" class="btn btn-default">保存</button>
@@ -133,9 +132,6 @@
 				</div>
 			</div>
 		</div>
-		<div id="draggable">
-			<p>请拖动我！</p>
-		</div>
 	</body>
 	<!--<script src="js/require.js" data-main="js/main"></script>-->
 	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
@@ -146,14 +142,13 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script>
 		$(function() {
-			
 			$("#main-Panel").sortable({
 				cursor: "move",
 				items: "li", //只是li可以拖动
 				opacity: 0.6, //拖动时，透明度为0.6
 				revert: true, //释放时，增加动画
 				update: function(event, ui) { //更新排序之后
-					//alert($(this).sortable("toArray"));
+					//do someThing
 				}
 			});
 		});
