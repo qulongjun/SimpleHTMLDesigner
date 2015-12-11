@@ -9,7 +9,8 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" href="css/animate.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
-		<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+		<!--<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">-->
+		<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css"/>
 	</head>
 
 	<body>
@@ -24,7 +25,7 @@
 			<div class="row-fluid">
 				<div id="leftNav" class="col-md-3">
 					<div class="tabbable" id="tabs-931592">
-						<ul class="nav nav-tabs">
+						<ul class="nav nav-tabs" id="leftNavUl">
 							<li class="active">
 								<a data-toggle="tab" href="#panel-505116">文本内容</a>
 							</li>
@@ -139,9 +140,20 @@
 	<script src="js/underscore.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/backbone.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/apps.js" type="text/javascript" charset="utf-8"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
+	<script src="js/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		$(function() {
+			$('#leftNavUl li').click(function() {
+				var index = $(this).index();
+				var indexActive;
+				$('#leftNavUl li.active').each(function() {
+					indexActive = $(this).index();
+				})
+				if (indexActive != index) {
+					$(this).addClass('active');
+				}
+			});
 			$("#main-Panel").sortable({
 				cursor: "move",
 				items: "li", //只是li可以拖动
