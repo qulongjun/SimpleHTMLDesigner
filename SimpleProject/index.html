@@ -9,6 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" href="css/animate.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
 	</head>
 
 	<body>
@@ -132,6 +133,9 @@
 				</div>
 			</div>
 		</div>
+		<div id="draggable">
+			<p>请拖动我！</p>
+		</div>
 	</body>
 	<!--<script src="js/require.js" data-main="js/main"></script>-->
 	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
@@ -139,5 +143,20 @@
 	<script src="js/underscore.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/backbone.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/apps.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	<script>
+		$(function() {
+			
+			$("#main-Panel").sortable({
+				cursor: "move",
+				items: "li", //只是li可以拖动
+				opacity: 0.6, //拖动时，透明度为0.6
+				revert: true, //释放时，增加动画
+				update: function(event, ui) { //更新排序之后
+					//alert($(this).sortable("toArray"));
+				}
+			});
+		});
+	</script>
 
 </html>

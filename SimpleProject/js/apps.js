@@ -60,7 +60,8 @@
 			"change #valueEle": "valueEleChange"
 		},
 		render: function(model) {
-			var newDiv = $('<li><div id="' + model.cid + '" class="box animated bounceInLeft"><' + model.get('tag') + '>' + model.get('value') + '</' + model.get('tag') + '></div></li>')
+			//bounceInLeft
+			var newDiv = $('<li><div id="' + model.cid + '" class="box animated "><' + model.get('tag') + '>' + model.get('value') + '</' + model.get('tag') + '></div></li>')
 			$("#main-Panel").append(newDiv);
 			$('#eleName').prop("value", model.get("name"));
 			$('#valueEle').prop('value', model.get("value"));
@@ -71,16 +72,12 @@
 			var cid = ele.id;
 			var model = chooseList.getByCid(cid);
 			$('.box').removeClass('chooseItemChecked');
-			ele.className = "box animated bounceInLeft chooseItemChecked";
-			//console.log(this.collection.getByCid(cid));
+			ele.className = "box  chooseItemChecked";
 			var temp=this.collection.getByCid(cid)
-			//this.model=this.collection.getByCid(cid);
-			//console.log(this.model);
-			//console.log(temp);
-			//$('#eleName').prop("value",temp.get("name"));
 			$('#valueEle').prop("value",temp.get("value"));
 			$('#eleName').prop("value",temp.get("name"));
 			chooseView.model=temp;
+			
 		},
 		eleNameChange: function(event) {
 			this.model.set("name", $('#eleName').prop('value'));
@@ -95,6 +92,5 @@
 	var optionView = new OptionalView();
 	var chooseView = new ChooseView({
 		collection: chooseList
-			//model: new ChooseTextItem()
 	});
 })();
