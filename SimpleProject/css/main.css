@@ -48,12 +48,19 @@ ul{
 .item>*{
 	display: inline-block;
 }
+.item img{
+	width: 100%;
+	height: 100%;
+}
 .box *{
 	position: relative;
 	top: 30%;
 	transform: translateY(-30%);
 }
-
+.box img{
+	width: 100%;
+	height: 100%;
+}
 .panel-item {
 	margin: 10px auto;
 	min-height: 100px;
