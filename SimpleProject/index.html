@@ -75,13 +75,13 @@
 						</div>
 					</div>
 					<div class="col-md-3">
+						<div id="" style="margin-bottom: 10px;">
+							<button type="button" class="btn btn-info" id="saveWork"  style="width: 100%;">保 存 作 品</button>
+						</div>
 						<div class="tabbable" id="tabs-931592">
 							<ul class="nav nav-tabs" id="rightNavUl">
 								<li class="active">
 									<a data-toggle="tab" href="#panel-505116">元素属性</a>
-								</li>
-								<li>
-									<a data-toggle="tab" href="#panel-420144">画布属性</a>
 								</li>
 							</ul>
 							<div class="tab-content">
@@ -132,11 +132,6 @@
 										</form>
 									</div>
 								</div>
-								<div class="tab-pane rightNavliDiv" id="panel-420144">
-									<p>
-										第二部分画布内容.
-									</p>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -149,8 +144,8 @@
 	<!--backbone库-->
 	<script src="js/underscore.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/backbone.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/store.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/apps.js" type="text/javascript" charset="utf-8"></script>
-	<!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
 	<script src="js/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		$(function() {
@@ -182,7 +177,7 @@
 				opacity: 0.6, //拖动时，透明度为0.6
 				revert: true, //释放时，增加动画
 				update: function(event, ui) { //更新排序之后
-					//do someThing
+					
 				}
 			});
 		});
