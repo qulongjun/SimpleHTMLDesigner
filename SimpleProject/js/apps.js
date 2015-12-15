@@ -6,7 +6,6 @@
 			text: 'unKnown',
 		}
 	});
-
 	//中间选中元素模型
 	var ChooseTextItem = Backbone.Model.extend({
 		defaults: {
@@ -67,7 +66,8 @@
 			"click .deleteEle": "deleteEle", //删除元素事件
 			"click #changeBtn": "picSrc", //变换图片事件
 			"click #saveWork": "saveWork", //保存画布事件
-			"click #previewWork": "preview" //预览作品
+			"click #previewWork": "preview", //预览作品
+			"click #clearAll": "clearAll" //清空全部元素
 		},
 		render: function(model) {
 			var newDiv = "";
@@ -116,8 +116,6 @@
 		picSrc: function(event) {
 			var path = $('#changePic').val();
 			alert(path);
-			//readFile();
-			//$('#' + this.model.cid).find('IMG').attr('src', "path");
 		},
 		//保存画布
 		saveWork: function() {
@@ -139,6 +137,7 @@
 					alert('保存成功！');
 				}
 			});
+			bootbox.alert("保存成功！");
 		},
 		//删除元素
 		deleteEle: function(event) {
@@ -150,15 +149,19 @@
 		},
 		preview: function() {
 			var aLi = $('#main-Panel').find("div");
-			var html="";
+			var html = "";
 			aLi.each(function() {
-				//alert($(this).html());
-				html+=$(this).html();
+				html += $(this).html();
 			});
 			bootbox.dialog({
 				title: "预览作品",
 				message: '<ul>' + html + '</ul>'
 			});
+		},
+		clearAll: function() {
+			while (this.collection.length != 0) {
+				this.collection.shift();
+			}
 		}
 	});
 
@@ -169,4 +172,34 @@
 		collection: chooseList
 	});
 	window.chooseList = chooseList;
+	$('#leftNavUl li').click(function() {
+		var index = $(this).index();
+		var indexActive;
+		$('#leftNavUl li.active').each(function() {
+			indexActive = $(this).index();
+		})
+		if (indexActive != index) {
+			$(this).addClass('active').siblings('li').removeClass('active');
+			$('.leftNavliDiv').eq(index).addClass('active').siblings().removeClass('active');
+		}
+	});
+	$('#rightNavUl li').click(function() {
+		var index = $(this).index();
+		var indexActive;
+		$('#rightNavUl li.active').each(function() {
+			indexActive = $(this).index();
+		})
+		if (indexActive != index) {
+			$(this).addClass('active').siblings('li').removeClass('active');
+			$('.rightNavliDiv').eq(index).addClass('active').siblings().removeClass('active');
+		}
+	});
+	$("#main-Panel").sortable({
+		cursor: "move",
+		items: "li", //只是li可以拖动
+		opacity: 0.6, //拖动时，透明度为0.6
+		revert: true, //释放时，增加动画
+		update: function(event, ui) { //更新排序之后
+		}
+	});
 })();
