@@ -78,6 +78,9 @@
 						<div id="" style="margin-bottom: 10px;">
 							<button type="button" class="btn btn-info" id="saveWork"  style="width: 100%;">保 存 作 品</button>
 						</div>
+						<div id="" style="margin-bottom: 10px;">
+							<button type="button" class="btn btn-success" id="previewWork"  style="width: 100%;">预 览 作 品</button>
+						</div>
 						<div class="tabbable" id="tabs-931592">
 							<ul class="nav nav-tabs" id="rightNavUl">
 								<li class="active">
@@ -100,34 +103,6 @@
 													<textarea class="form-control" id="valueEle" rows="3" placeholder="请输入文本内容"></textarea>
 												</div>
 											</div>
-											<div class="form-group">
-												<label for="inputPassword3" class="col-sm-3 control-label">上传图片</label>
-												<div class="col-sm-6">
-													<input type="file" name="" id="changePic" value="" />
-												</div>
-												<div class="col-sm-3">
-													<button type="button" id="changeBtn" class="btn btn-default">更换</button>
-												</div>
-											</div>
-											<!--<div class="form-group">
-												<label for="inputPassword3" class="col-sm-3 control-label">文本操作</label>
-												<div class="btn-group col-sm-9" role="group">
-													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-color"></span></button>
-													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-bold"></span></button>
-													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-italic"></span></button>
-													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-left"></span></button>
-													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-center"></span></button>
-													<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-right"></span></button>
-												</div>
-											</div>-->
-											<!--<div class="form-group">
-												<div class="col-sm-offset-2 col-sm-2">
-													<button type="button" class="btn btn-default">保存</button>
-												</div>
-												<div class="col-sm-2">
-													<button type="button" class="btn btn-default">取消</button>
-												</div>
-											</div>-->
 											<button type="button" class="btn btn-danger deleteEle"  style="width: 100%;">删 除 元 素</button>
 										</form>
 									</div>
@@ -142,11 +117,14 @@
 	<!--<script src="js/require.js" data-main="js/main"></script>-->
 	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<!--backbone库-->
+	<script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/underscore.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/backbone.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/bootbox.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/store.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/apps.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script>
 		$(function() {
 			$('#leftNavUl li').click(function() {

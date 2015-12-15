@@ -27,7 +27,6 @@
 		url: 'receive.html',
 		model: ChooseTextItem
 	});
-
 	//备选元素视图
 	var OptionalView = Backbone.View.extend({
 		el: $('#leftNav'),
@@ -47,9 +46,6 @@
 			chooseView.model = choose;
 		}
 	});
-
-
-
 	//选中元素视图
 	var ChooseView = Backbone.View.extend({
 		el: $("#main-Context"),
@@ -70,7 +66,8 @@
 			"change #valueEle": "valueEleChange", //元素值修改事件
 			"click .deleteEle": "deleteEle", //删除元素事件
 			"click #changeBtn": "picSrc", //变换图片事件
-			"click #saveWork": "saveWork" //保存画布事件
+			"click #saveWork": "saveWork", //保存画布事件
+			"click #previewWork": "preview" //预览作品
 		},
 		render: function(model) {
 			var newDiv = "";
@@ -86,6 +83,9 @@
 		},
 		//移除元素
 		removeEle: function(model) {
+			if (model.cid == undefined) {
+				alert("请选择一个元素");
+			}
 			$('#' + model.cid).parents('li').remove();
 			$('#eleName').prop("value", "");
 			$('#valueEle').prop("value", "");
@@ -115,7 +115,9 @@
 		//图片修改
 		picSrc: function(event) {
 			var path = $('#changePic').val();
-			$('#' + this.model.cid).find('IMG').attr('src', "img/测试图片4.jpg");
+			alert(path);
+			//readFile();
+			//$('#' + this.model.cid).find('IMG').attr('src', "path");
 		},
 		//保存画布
 		saveWork: function() {
@@ -125,7 +127,6 @@
 				var cid = $(this).prop("id");
 				var model = chooseList.getByCid(cid);
 				arrs.push(model.toJSON());
-				//model.save();
 			});
 			store.remove();
 			store.set("item", arrs);
@@ -146,8 +147,22 @@
 			} else {
 				this.collection.remove(this.model);
 			}
+		},
+		preview: function() {
+			var aLi = $('#main-Panel').find("div");
+			var html="";
+			aLi.each(function() {
+				//alert($(this).html());
+				html+=$(this).html();
+			});
+			bootbox.dialog({
+				title: "预览作品",
+				message: '<ul>' + html + '</ul>'
+			});
 		}
 	});
+
+
 	var chooseList = new ChooseTextItemList();
 	var optionView = new OptionalView();
 	var chooseView = new ChooseView({
