@@ -1,32 +1,46 @@
-/**
- *RequireJS main主入口 
- */
-require.config({
-	paths: {
-		"jquery": "jquery",
-		"bootstrap": "bootstarp",
-		"underscore": "underscore",
-		"backbone": "backbone"
-	},
-	shime: {
-		"underscore": {
-			exports: '_'
-		},
-		"backbone": {
-			deps: ['underscore', 'jquery'],
-			exports: 'Backbone'
-		},
-		
-	}
-});
-require(['jquery', 'underscore', 'backbone'], function() {
 
+
+require.config({
+	paths:{
+		"jquery":"jquery",
+		"underscore":"underscore",
+		"backbone":"backbone",
+		"bootstrap":"bootstrap",
+		"bootbox":"bootbox",
+		"jquery-ui":"jquery-ui",
+		"store":"store"
+	},
+	shim:{
+		'underscore':{
+			exports:'_'
+		},
+		'backbone':{
+			deps:['underscore','jquery'],
+			exports:'Backbone'
+		},
+		'bootstrap':{
+			deps:['jquery'],
+			exports:'bootstrap'
+		},
+		'bootbox':{
+			deps:['bootstrap'],
+			exports:'bootbox'
+		}		
+	}
+})
+
+
+
+require(["jquery", "underscore", "backbone","bootstrap","bootbox","jquery-ui"], function($, _, Backbone,bootstrap,bootbox) {
+	
+	//左侧备选元素模型
 	var Optional = Backbone.Model.extend({
 		defaults: {
 			tag: 'unKnown',
 			text: 'unKnown',
 		}
 	});
+	//中间选中元素模型
 	var ChooseTextItem = Backbone.Model.extend({
 		defaults: {
 			tag: 'div',
@@ -41,10 +55,12 @@ require(['jquery', 'underscore', 'backbone'], function() {
 		}
 	});
 
+	//选中元素集合
 	var ChooseTextItemList = Backbone.Collection.extend({
 		url: 'receive.html',
 		model: ChooseTextItem
 	});
+	//备选元素视图
 	var OptionalView = Backbone.View.extend({
 		el: $('#leftNav'),
 		events: {
@@ -63,6 +79,7 @@ require(['jquery', 'underscore', 'backbone'], function() {
 			chooseView.model = choose;
 		}
 	});
+	//选中元素视图
 	var ChooseView = Backbone.View.extend({
 		el: $("#main-Context"),
 		url: "",
@@ -77,14 +94,14 @@ require(['jquery', 'underscore', 'backbone'], function() {
 			}
 		},
 		events: {
-			"click .box": 'clickBox',
-			"change #eleName": "eleNameChange",
-			"change #valueEle": "valueEleChange",
-			"click .deleteEle": "deleteEle",
-			"click #changeBtn": "picSrc",
-			"click #saveWork": "saveWork",
-			"click #previewWork": "preview",
-			"click #clearAll": "clearAll"
+			"click .box": 'clickBox', //选中元素事件
+			"change #eleName": "eleNameChange", //元素名称修改事件
+			"change #valueEle": "valueEleChange", //元素值修改事件
+			"click .deleteEle": "deleteEle", //删除元素事件
+			"click #changeBtn": "picSrc", //变换图片事件
+			"click #saveWork": "saveWork", //保存画布事件
+			"click #previewWork": "preview", //预览作品
+			"click #clearAll": "clearAll" //清空全部元素
 		},
 		render: function(model) {
 			var newDiv = "";
@@ -98,6 +115,7 @@ require(['jquery', 'underscore', 'backbone'], function() {
 			$('#valueEle').prop('value', model.get("value"));
 			return this;
 		},
+		//移除元素
 		removeEle: function(model) {
 			if (model.cid == undefined) {
 				alert("请选择一个元素");
@@ -106,6 +124,7 @@ require(['jquery', 'underscore', 'backbone'], function() {
 			$('#eleName').prop("value", "");
 			$('#valueEle').prop("value", "");
 		},
+		//选中元素
 		clickBox: function(event) {
 			var ele = event.target.tagName == "DIV" ? event.target : event.target.parentElement;
 			var cid = ele.id;
@@ -117,20 +136,25 @@ require(['jquery', 'underscore', 'backbone'], function() {
 			$('#eleName').prop("value", temp.get("name"));
 			chooseView.model = temp;
 		},
+		//元素名称修改
 		eleNameChange: function(event) {
 			this.model.set("name", $('#eleName').prop('value'));
 		},
+		//文本值修改
 		valueEleChange: function(event) {
 			var value = $('#valueEle').prop('value')
 			this.model.set("value", value);
 			$('#' + this.model.cid).children().html(value);
 		},
+		//图片修改
 		picSrc: function(event) {
 			var path = $('#changePic').val();
 			alert(path);
 		},
+		//保存画布
 		saveWork: function() {
 			var arrs = new Array;
+			//按照画布上的model顺序保存model到数组中
 			$('#main-Panel').find('div').each(function() {
 				var cid = $(this).prop("id");
 				var model = chooseList.getByCid(cid);
@@ -138,6 +162,7 @@ require(['jquery', 'underscore', 'backbone'], function() {
 			});
 			store.remove();
 			store.set("item", arrs);
+			//发送一个Ajax请求
 			$.ajax({
 				type: "POST",
 				url: "receive.html",
@@ -146,7 +171,9 @@ require(['jquery', 'underscore', 'backbone'], function() {
 					alert('保存成功！');
 				}
 			});
+			bootbox.alert("保存成功！");
 		},
+		//删除元素
 		deleteEle: function(event) {
 			if (this.model == undefined) {
 				alert("画布中至少需要一个元素！");
@@ -179,5 +206,34 @@ require(['jquery', 'underscore', 'backbone'], function() {
 		collection: chooseList
 	});
 	window.chooseList = chooseList;
-
+	$('#leftNavUl li').click(function() {
+		var index = $(this).index();
+		var indexActive;
+		$('#leftNavUl li.active').each(function() {
+			indexActive = $(this).index();
+		})
+		if (indexActive != index) {
+			$(this).addClass('active').siblings('li').removeClass('active');
+			$('.leftNavliDiv').eq(index).addClass('active').siblings().removeClass('active');
+		}
+	});
+	$('#rightNavUl li').click(function() {
+		var index = $(this).index();
+		var indexActive;
+		$('#rightNavUl li.active').each(function() {
+			indexActive = $(this).index();
+		})
+		if (indexActive != index) {
+			$(this).addClass('active').siblings('li').removeClass('active');
+			$('.rightNavliDiv').eq(index).addClass('active').siblings().removeClass('active');
+		}
+	});
+	$("#main-Panel").sortable({
+		cursor: "move",
+		items: "li", //只是li可以拖动
+		opacity: 0.6, //拖动时，透明度为0.6
+		revert: true, //释放时，增加动画
+		update: function(event, ui) { //更新排序之后
+		}
+	});
 });
