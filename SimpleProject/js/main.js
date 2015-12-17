@@ -5,8 +5,7 @@ require.config({
 		"backbone": "backbone",
 		"bootstrap": "bootstrap",
 		"bootbox": "bootbox",
-		"jquery-ui": "jquery-ui",
-		"store": "store"
+		"jquery-ui": "jquery-ui"
 	},
 	shim: {
 		'underscore': {
@@ -17,25 +16,27 @@ require.config({
 			exports: 'Backbone'
 		},
 		'bootstrap': {
-			deps: ['jquery'],
-			exports: 'bootstrap'
+			deps: ['jquery']
 		},
 		'bootbox': {
-			deps: ['bootstrap'],
-			exports: 'bootbox'
+			deps: ['bootstrap']
+		},
+		'jquery-ui':{
+			deps:['jquery']
 		}
 	}
 })
 
 
 
-require(["jquery", "underscore", "backbone", "bootstrap", "bootbox", "jquery-ui"], function($, _, Backbone, bootstrap, bootbox) {
+require(["jquery", "underscore", "backbone", "bootstrap", "bootbox", "jquery-ui","store"], function() {
 
+	//var bootbox=require('bootbox');
 	//左侧备选元素模型
 	var Optional = Backbone.Model.extend({
 		defaults: {
 			tag: 'unKnown',
-			text: 'unKnown',
+			text: 'unKnown'
 		}
 	});
 	//中间选中元素模型
@@ -49,7 +50,8 @@ require(["jquery", "underscore", "backbone", "bootstrap", "bootbox", "jquery-ui"
 			bold: 'normal',
 			italic: 'normal',
 			textAlign: 'left',
-			picSrc: '',
+			picSrc: 'img/测试图片.jpg',
+			picIndex: -1
 		}
 	});
 
@@ -82,6 +84,7 @@ require(["jquery", "underscore", "backbone", "bootstrap", "bootbox", "jquery-ui"
 		el: $("#main-Context"),
 		url: "",
 		initialize: function() {
+			this.picArr = ["img/测试图片.jpg", "img/测试图片2.jpg", "img/测试图片3.jpg", "img/测试图片4.jpg"];
 			this.collection.bind("add", this.render);
 			this.collection.bind("remove", this.removeEle);
 			var js = store.get("item");
@@ -96,7 +99,7 @@ require(["jquery", "underscore", "backbone", "bootstrap", "bootbox", "jquery-ui"
 			"change #eleName": "eleNameChange", //元素名称修改事件
 			"change #valueEle": "valueEleChange", //元素值修改事件
 			"click .deleteEle": "deleteEle", //删除元素事件
-			"click #changeBtn": "picSrc", //变换图片事件
+			"click #changePicBtn": "picSrc", //变换图片事件
 			"click #saveWork": "saveWork", //保存画布事件
 			"click #previewWork": "preview", //预览作品
 			"click #clearAll": "clearAll" //清空全部元素
@@ -104,7 +107,7 @@ require(["jquery", "underscore", "backbone", "bootstrap", "bootbox", "jquery-ui"
 		render: function(model) {
 			var newDiv = "";
 			if (model.get('tag') == "IMG") {
-				newDiv = $('<li><div id="' + model.cid + '" class="box animated" style="height: 500px;"><' + model.get('tag') + ' src="img/测试图片.jpg" style="width:100%;heigth:100%" /></div></li>')
+				newDiv = $('<li><div id="' + model.cid + '" class="box animated" style="height: 500px;"><' + model.get('tag') + ' src="' + model.get('picSrc') + '" style="width:100%;heigth:100%" /></div></li>')
 			} else {
 				newDiv = $('<li><div id="' + model.cid + '" class="box animated "><' + model.get('tag') + '>' + model.get('value') + '</' + model.get('tag') + '></div></li>')
 			}
@@ -146,8 +149,17 @@ require(["jquery", "underscore", "backbone", "bootstrap", "bootbox", "jquery-ui"
 		},
 		//图片修改
 		picSrc: function(event) {
-			var path = $('#changePic').val();
-			alert(path);
+			if (this.model.get('tag') == 'IMG') {
+				pIndex = this.model.get('picIndex') + 1;
+				if (pIndex == this.picArr.length) {
+					pIndex = 0;
+				}
+				$('#' + this.model.cid).find('IMG').prop('src', this.picArr[pIndex]);
+				this.model.set('picSrc', this.picArr[pIndex]);
+				this.model.set("picIndex", pIndex);
+			} else {
+				bootbox.alert('您必须选择一个图片元素');
+			}
 		},
 		//保存画布
 		saveWork: function() {
@@ -166,7 +178,7 @@ require(["jquery", "underscore", "backbone", "bootstrap", "bootbox", "jquery-ui"
 				url: "receive.html",
 				data: JSON.stringify(arrs),
 				success: function(result) {
-					alert('保存成功！');
+					//alert('保存成功！');
 				}
 			});
 			bootbox.alert("保存成功！");
