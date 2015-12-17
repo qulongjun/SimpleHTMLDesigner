@@ -1,38 +1,36 @@
-
-
 require.config({
-	paths:{
-		"jquery":"jquery",
-		"underscore":"underscore",
-		"backbone":"backbone",
-		"bootstrap":"bootstrap",
-		"bootbox":"bootbox",
-		"jquery-ui":"jquery-ui",
-		"store":"store"
+	paths: {
+		"jquery": "jquery",
+		"underscore": "underscore",
+		"backbone": "backbone",
+		"bootstrap": "bootstrap",
+		"bootbox": "bootbox",
+		"jquery-ui": "jquery-ui",
+		"store": "store"
 	},
-	shim:{
-		'underscore':{
-			exports:'_'
+	shim: {
+		'underscore': {
+			exports: '_'
 		},
-		'backbone':{
-			deps:['underscore','jquery'],
-			exports:'Backbone'
+		'backbone': {
+			deps: ['underscore', 'jquery'],
+			exports: 'Backbone'
 		},
-		'bootstrap':{
-			deps:['jquery'],
-			exports:'bootstrap'
+		'bootstrap': {
+			deps: ['jquery'],
+			exports: 'bootstrap'
 		},
-		'bootbox':{
-			deps:['bootstrap'],
-			exports:'bootbox'
-		}		
+		'bootbox': {
+			deps: ['bootstrap'],
+			exports: 'bootbox'
+		}
 	}
 })
 
 
 
-require(["jquery", "underscore", "backbone","bootstrap","bootbox","jquery-ui"], function($, _, Backbone,bootstrap,bootbox) {
-	
+require(["jquery", "underscore", "backbone", "bootstrap", "bootbox", "jquery-ui"], function($, _, Backbone, bootstrap, bootbox) {
+
 	//左侧备选元素模型
 	var Optional = Backbone.Model.extend({
 		defaults: {
@@ -192,10 +190,19 @@ require(["jquery", "underscore", "backbone","bootstrap","bootbox","jquery-ui"], 
 				message: '<ul>' + html + '</ul>'
 			});
 		},
+		//清空画布
 		clearAll: function() {
-			while (this.collection.length != 0) {
-				this.collection.shift();
-			}
+			var col = this.collection;
+			bootbox.confirm("是否清空当前画布和本地缓存数据？", function(action) {
+				if (action == true) {
+					while (col.length != 0) {
+						col.shift();
+					}
+					store.remove("item");
+					bootbox.alert("清空成功！");
+				}
+			})
+
 		}
 	});
 
